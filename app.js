@@ -1,18 +1,21 @@
-const { default: makeWASocket, DisconnectReason, useMultiFileAuthState } = require("baileys");
+const { default: makeWASocket, DisconnectReason, useMultiFileAuthState, Browsers } = require("baileys");
 const { Boom } = require("@hapi/boom");
 const readline = require("node:readline");
-const chalk = require("chalk").default;
-const { question } = require("./util/user_interaction");
+const { question, BLUEBG, GREENBG } = require("./util/user_interaction");
 
 const connectToWhatsapp = async () => {
     const { state, saveCreds } = await useMultiFileAuthState('session-auth');
     const bot = makeWASocket({
         auth: state,
         printQRInTerminal: false,
-
+        browser: Browsers.ubuntu("Desktop"),
+        syncFullHistory: true
     });
 
     if (!bot.authState.creds.registered) {
-        const phoneNumber = question("Enter your phone number (ex. 6281234567890): ");
+        const phoneNumber = question(`${BLUEBG("INPUT")} Enter your phone number (ex. 628xxxxxxxxx) -> `);
+        const code = await bot.requestPairingCode(phoneNumber);
+        console.log(`${GREENBG("CODE")} Pairing code: ${code}`);
     }
+
 }
