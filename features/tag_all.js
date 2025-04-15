@@ -1,4 +1,4 @@
-const tagAll = (bot) => {
+const tagAll = (bot, group_name) => {
     bot.ev.on('messages.upsert', async (event) => {
         const latest_message = event.messages[0];
 
@@ -9,15 +9,19 @@ const tagAll = (bot) => {
 
         if (isGroup && message_content.includes("@everyone")) {
             const group_metadata = await bot.groupMetadata(latest_message.key?.remoteJid);
-            let group_members = group_metadata.participants.map(p => p.id);
-            let each_members = group_members.map(p => p.split("@")[0])
-            console.log(each_members)
-
-            const pengirim = latest_message?.key?.participant.split("@")[0]
-
-            const pesan = `🔔 @${pengirim} *Men-tag semua anggota grup* 🔔`
-
-            await bot.sendMessage(latest_message.key?.remoteJid, { text: pesan, mentions: group_members })
+            
+            // Check if the message is from the specified group
+            if (group_metadata.subject === group_name) {
+                let group_members = group_metadata.participants.map(p => p.id);
+                let each_members = group_members.map(p => p.split("@")[0])
+                console.log(each_members)
+    
+                const pengirim = latest_message?.key?.participant.split("@")[0]
+    
+                const pesan = `🔔 @${pengirim} *Men-tag semua anggota grup* 🔔`
+    
+                await bot.sendMessage(latest_message.key?.remoteJid, { text: pesan, mentions: group_members })
+            }
         }
     })
 }

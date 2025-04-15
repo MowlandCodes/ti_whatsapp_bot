@@ -185,8 +185,10 @@ const connectToWhatsapp = async () => {
     }
   });
 
-  tagAll(bot);
+  tagAll(bot, "Testing group ti 2");
 
+
+  /*******************************************************************/
   /*******************************************************************/
 
   // Watch credentials update and store it in session-auth
