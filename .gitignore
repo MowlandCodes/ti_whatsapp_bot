@@ -1,2 +1,3 @@
 !.gitignore
 session-auth
+node_modules
