@@ -22,6 +22,7 @@ const { tagAll } = require("./features");
 const { pino } = require("pino");
 const { NodeCache } = require("@cacheable/node-cache");
 const { Boom } = require("@hapi/boom");
+const { validGroups } = require("./databases/data");
 
 const store = makeInMemoryStore({
     logger: pino({ level: "silent" }).child({
@@ -115,8 +116,6 @@ const connectToWhatsapp = async () => {
         let sender;
         let group;
         let group_name;
-
-        const validGroups = ["Testing group ti 2"]; // Tambahkan group yang ingin di pantau log chatnya di sini
 
         const isGroup = latest_message.key?.remoteJid.endsWith("@g.us");
         if (isGroup) {
