@@ -12,10 +12,11 @@
   "type": "commonjs",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon",
+    "start": "node app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
+    "@cacheable/node-cache": "^1.5.4",
     "@hapi/boom": "^10.0.1",
     "baileys": "^6.7.16",
     "chalk": "^5.4.1",

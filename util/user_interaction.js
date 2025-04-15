@@ -6,9 +6,14 @@ const rl = readline.createInterface({
     output: process.stdout
 })
 
-const question = rl.question
+const question = (text) => new Promise((resolve) => rl.question(text, resolve))
+const questionSync = (text) => rl.question(text)
 
 // Text Coloring
+const BLUE = (text) => {
+    return chalk.blueBright.bold(`${text}`);
+}
+
 const GREEN = (text) => {
     return chalk.greenBright.bold(`${text}`);
 }
@@ -39,11 +44,13 @@ const BLUEBG = (text) => {
 
 module.exports = {
     question,
+    questionSync,
     GREEN,
     RED,
     YELLOW,
     GREENBG,
     REDBG,
     YELLOWBG,
-    BLUEBG
+    BLUEBG,
+    BLUE
 }
