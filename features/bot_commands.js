@@ -1,3 +1,4 @@
+const { getUrlInfo } = require("baileys");
 const { menuText, unknownCommand } = require("../databases/data");
 const { commandPrefix } = require("../databases/settings");
 
@@ -26,9 +27,18 @@ const botCommands = (bot, validGroups, botNumber) => {
                 // Run command in the group only if the bot is mentioned
                 if (mentions.includes(botNumber)) {
                     if (messageContent.includes(`${commandPrefix}help`)) {
+                        const linkPreview = await getUrlInfo(
+                            "https://github.com/mowlandcodes/ti_whatsapp_bot",
+                            {
+                                thumbnailWidth: 1024,
+                                fetchOpts: { timeout: 5000 },
+                                uploadImage: bot.waUploadToServer,
+                            },
+                        );
+
                         await bot.sendMessage(groupJid, {
                             text: menuText,
-                            mentions: [senderJid],
+                            linkPreview,
                         });
                     } else {
                         await bot.sendMessage(groupJid, {

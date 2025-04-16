@@ -1,4 +1,4 @@
-const validGroups = ["Testing group ti 2"];
+const validGroups = ["Testing bot TI"];
 
 const menuText = `
 🎓 *Selamat datang di  _Prodi Teknik Informatika Semester 3_* 🎓
