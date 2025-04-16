@@ -18,11 +18,12 @@ const {
     RED,
     YELLOWBG,
 } = require("./util/user_interaction");
-const { tagAll } = require("./features");
+const { tagAll, botCommands } = require("./features");
 const { pino } = require("pino");
 const { NodeCache } = require("@cacheable/node-cache");
 const { Boom } = require("@hapi/boom");
 const { validGroups } = require("./databases/data");
+const { commandPrefix } = require("./databases/settings");
 
 const store = makeInMemoryStore({
     logger: pino({ level: "silent" }).child({
@@ -68,18 +69,20 @@ const connectToWhatsapp = async () => {
 
     if (!bot.authState.creds.registered) {
         const phoneNumber = await question(
-            `${BLUEBG("INFO")} Enter you WhatsApp Phone Number (ex. 628xxxxxxxxx): `
+            `${BLUEBG("INFO")} Enter you WhatsApp Phone Number (ex. 628xxxxxxxxx): `,
         );
 
         setTimeout(async () => {
             let pairingCode = await bot.requestPairingCode(phoneNumber);
             pairingCode = pairingCode?.match(/.{1,4}/g)?.join("-") || code;
 
-            console.log(`${GREENBG("SUCCESS")} Pairing Code: ${GREEN(pairingCode)}`);
+            console.log(
+                `${GREENBG("SUCCESS")} Pairing Code: ${GREEN(pairingCode)}`,
+            );
         }, 3000);
     }
 
-    const bot_number = `${bot?.authState?.creds?.me?.id.split("@")[0].split(":")[0]}@s.whatsapp.net` // Get Current Bot Number
+    const bot_number = `${bot?.authState?.creds?.me?.id.split("@")[0].split(":")[0]}@s.whatsapp.net`; // Get Current Bot Number
 
     // Check connection status
     bot.ev.on("connection.update", async (update) => {
@@ -87,7 +90,7 @@ const connectToWhatsapp = async () => {
 
         if (connection === "open") {
             console.log(
-                `${GREENBG("SUCCESS")} ${GREEN("Bot Connected to WhatsApp!")}`
+                `${GREENBG("SUCCESS")} ${GREEN("Bot Connected to WhatsApp!")}`,
             );
         } else if (qr) {
             console.log(`${BLUEBG("INFO")} Using Pairing Code to Login...`);
@@ -96,8 +99,9 @@ const connectToWhatsapp = async () => {
                 (lastDisconnect.error instanceof Boom)?.output?.statusCode !==
                 DisconnectReason.loggedOut;
             console.log(
-                `${REDBG("CONNECTION ERROR")} Connection closed due to ${lastDisconnect.error
-                }`
+                `${REDBG("CONNECTION ERROR")} Connection closed due to ${
+                    lastDisconnect.error
+                }`,
             );
             if (shouldReconnect) {
                 console.log(`${BLUEBG("INFO")} Reconnecting to Bot...`);
@@ -137,9 +141,9 @@ const connectToWhatsapp = async () => {
             latest_message.message?.conversation;
         const isMediaMessage =
             latest_message.message?.imageMessage ||
-                latest_message.message?.videoMessage ||
-                latest_message.message?.audioMessage ||
-                latest_message.message?.documentMessage
+            latest_message.message?.videoMessage ||
+            latest_message.message?.audioMessage ||
+            latest_message.message?.documentMessage
                 ? true
                 : false;
 
@@ -150,9 +154,10 @@ const connectToWhatsapp = async () => {
             if (validGroups.includes(group_name)) {
                 console.log(
                     `${BLUEBG("INFO")} ${YELLOWBG("GROUP CHAT")} Timestamp: ${GREEN(
-                        message_timestamp
-                    )} ${BLUE(`[${sender}@${sender_origin}]: `)} ${message_content} ${isMediaMessage ? BLUEBG("[MediaMessage]") : ""
-                    }`
+                        message_timestamp,
+                    )} ${BLUE(`[${sender}@${sender_origin}]: `)} ${message_content} ${
+                        isMediaMessage ? BLUEBG("[MediaMessage]") : ""
+                    }`,
                 );
             }
         } else if (latest_message.key?.fromMe) {
@@ -161,31 +166,34 @@ const connectToWhatsapp = async () => {
                 // You sending message to yourself
                 console.log(
                     `${BLUEBG("INFO")} ${GREENBG("PRIVATE CHAT")} Timestamp: ${GREEN(
-                        message_timestamp
-                    )} ${BLUE(`You -> You: `)} ${message_content} ${isMediaMessage ? BLUEBG("[MediaMessage]") : ""
-                    }`
+                        message_timestamp,
+                    )} ${BLUE(`You -> You: `)} ${message_content} ${
+                        isMediaMessage ? BLUEBG("[MediaMessage]") : ""
+                    }`,
                 );
             } else {
                 console.log(
                     `${BLUEBG("INFO")} ${GREENBG("PRIVATE CHAT")} Timestamp: ${GREEN(
-                        message_timestamp
-                    )} ${BLUE(`You -> [${sender_origin}]: `)} ${message_content} ${isMediaMessage ? BLUEBG("[MediaMessage]") : ""
-                    }`
+                        message_timestamp,
+                    )} ${BLUE(`You -> [${sender_origin}]: `)} ${message_content} ${
+                        isMediaMessage ? BLUEBG("[MediaMessage]") : ""
+                    }`,
                 );
             }
         } else {
             // Someone sending message to you
             console.log(
                 `${BLUEBG("INFO")} ${GREENBG("PRIVATE CHAT")} Timestamp: ${GREEN(
-                    message_timestamp
-                )} ${BLUE(`[${sender}] -> You: `)} ${message_content} ${isMediaMessage ? BLUEBG("[MediaMessage]") : ""
-                }`
+                    message_timestamp,
+                )} ${BLUE(`[${sender}] -> You: `)} ${message_content} ${
+                    isMediaMessage ? BLUEBG("[MediaMessage]") : ""
+                }`,
             );
         }
     });
 
-    tagAll(bot, ["Testing group ti 2"]);
-
+    tagAll(bot, validGroups);
+    botCommands(bot, validGroups, bot_number);
 
     /*******************************************************************/
     /*******************************************************************/
@@ -196,7 +204,7 @@ const connectToWhatsapp = async () => {
 
 connectToWhatsapp();
 
-process.on("uncaughtException", function(err) {
+process.on("uncaughtException", function (err) {
     let e = String(err);
     if (e.includes("conflict")) return;
     if (e.includes("Socket connection timeout")) return;
