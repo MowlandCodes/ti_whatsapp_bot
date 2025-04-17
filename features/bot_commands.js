@@ -1,8 +1,9 @@
 const { getUrlInfo } = require("baileys");
-const { menuText, unknownCommand } = require("../databases/data");
+const { menuText, unknownCommand, serverMon } = require("../databases/data");
 const { commandPrefix } = require("../databases/settings");
 const { REDBG, RED } = require("../util/user_interaction");
 const osUtils = require("node-os-utils");
+const { toTitleCase } = require("../util");
 
 const botCommands = (bot, validGroups, botJid) => {
     bot.ev.on("messages.upsert", async (event) => {
@@ -77,11 +78,52 @@ const botCommands = (bot, validGroups, botJid) => {
                         messageContent.includes(`${commandPrefix}server`)
                     ) {
                         const perfData = performance.toJSON();
+
+                        // Server Runtime
                         const runtime = perfData.nodeTiming.duration;
+
+                        // Server CPU Stats
+                        const cpuUsagePercent = await osUtils.cpu.usage();
+                        const cpuModel = osUtils.cpu.model();
+
+                        // Server Memory Stats
+                        const ramInfo = await osUtils.mem.info();
+                        const ramFree = ramInfo.freeMemMb;
+                        const ramTotal = ramInfo.totalMemMb;
+                        const ramUsed = ramInfo.usedMemMb;
+
+                        // Server Drive Stats
+                        const driveInfo = await osUtils.drive.info();
+                        const driveFree = driveInfo.freeGb;
+                        const driveTotal = driveInfo.totalGb;
+                        const driveUsed = driveInfo.usedGb;
+
+                        // Server OS Stats
+                        const osPlatform = toTitleCase(osUtils.os.platform());
+                        let osDistro;
+                        osUtils.os.oos().then((info) => (osDistro = info));
+                        const osArch = osUtils.os.arch();
+
+                        const stats = {
+                            runtime,
+                            cpuUsagePercent,
+                            cpuModel,
+                            ramTotal,
+                            ramUsed,
+                            ramFree,
+                            driveFree,
+                            driveTotal,
+                            driveUsed,
+                            osPlatform,
+                            osDistro,
+                            osArch,
+                        };
+
+                        const serverStats = serverMon(stats);
 
                         // Get Server Statistics
                         await bot.sendMessage(groupJid, {
-                            text: `📊 *Informasi tentang server* 📊`,
+                            text: serverStats,
                             mentions: [senderJid],
                         });
                     }

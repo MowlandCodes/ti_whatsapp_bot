@@ -1,4 +1,8 @@
-const validGroups = ["Testing bot TI"];
+const validGroups = [
+    "Testing bot TI",
+    "Komunitas laptop bajakan",
+    "Komunitas Jual Beli Laptop/PC Ponorogo",
+];
 
 const menuText = `
 🎓 *Selamat datang di  _Prodi Teknik Informatika Semester 3_* 🎓
@@ -39,8 +43,35 @@ const unknownCommand = `
 > Ketik \`/help\` untuk mendapatkan bantuan dari *Sobat Kuliah* 
 `;
 
+const serverMon = (serverStats) => {
+    return `📊 *Server Status* 📊
+
+\`RUNTIME\` => *${serverStats.runtime} seconds*
+
+*OS INFO*
+\`PLATFORM\` => *${serverStats.osPlatform} ${serverStats.osDistro} ${serverStats.osArch}*
+
+*CPU INFO*
+\`PROCESSOR\` => *${serverStats.cpuModel}*
+\`CPU USAGE\` => *${serverStats.cpuUsagePercent} %*
+
+*RAM / MEMORY*
+\`TOTAL RAM\` => *${serverStats.ramTotal} Mb*
+\`USED RAM\` => *${serverStats.ramUsed} Mb*
+\`AVAILABLE RAM\` => *${serverStats.ramFree} Mb*
+
+*DRIVE / STORAGE INFO*
+\`DRIVE TOTAL\` => *${serverStats.driveTotal} Mb*
+\`DRIVE FREE\` => *${serverStats.driveFree} Mb*
+\`USED DRIVE\` => *${serverStats.driveUsed} Mb*
+
+> 👨🏻‍🎓 *\`Sobat Kuliah\`* 👨🏻‍🎓 adalah bot yang dibuat untuk membantu kalian dalam perkuliahan di *Universitas Darussalam Gontor*
+`;
+};
+
 module.exports = {
     validGroups,
     menuText,
     unknownCommand,
+    serverMon,
 };
