@@ -61,9 +61,9 @@ const serverMon = (serverStats) => {
 \`AVAILABLE RAM\` => *${serverStats.ramFree} Mb*
 
 *DRIVE / STORAGE INFO*
-\`DRIVE TOTAL\` => *${serverStats.driveTotal} Mb*
-\`DRIVE FREE\` => *${serverStats.driveFree} Mb*
-\`USED DRIVE\` => *${serverStats.driveUsed} Mb*
+\`DRIVE TOTAL\` => *${serverStats.driveTotal} Gb*
+\`DRIVE FREE\` => *${serverStats.driveFree} Gb*
+\`USED DRIVE\` => *${serverStats.driveUsed} Gb*
 
 > 👨🏻‍🎓 *\`Sobat Kuliah\`* 👨🏻‍🎓 adalah bot yang dibuat untuk membantu kalian dalam perkuliahan di *Universitas Darussalam Gontor*
 `;
