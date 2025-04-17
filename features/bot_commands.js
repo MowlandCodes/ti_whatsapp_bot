@@ -2,6 +2,7 @@ const { getUrlInfo } = require("baileys");
 const { menuText, unknownCommand } = require("../databases/data");
 const { commandPrefix } = require("../databases/settings");
 const { REDBG, RED } = require("../util/user_interaction");
+const osUtils = require("node-os-utils");
 
 const botCommands = (bot, validGroups, botJid) => {
     bot.ev.on("messages.upsert", async (event) => {
@@ -71,6 +72,17 @@ const botCommands = (bot, validGroups, botJid) => {
                         await bot.sendMessage(groupJid, {
                             text: `> 📢 *@${senderJid.split("@")[0]} men-tag semua anggota grup*`,
                             mentions: groupMembers,
+                        });
+                    } else if (
+                        messageContent.includes(`${commandPrefix}server`)
+                    ) {
+                        const perfData = performance.toJSON();
+                        const runtime = perfData.nodeTiming.duration;
+
+                        // Get Server Statistics
+                        await bot.sendMessage(groupJid, {
+                            text: `📊 *Informasi tentang server* 📊`,
+                            mentions: [senderJid],
                         });
                     }
                 }
