@@ -75,7 +75,7 @@ const botCommands = (bot, validGroups, botJid) => {
                             mentions: groupMembers,
                         });
                     } else if (
-                        messageContent.includes(`${commandPrefix}server`)
+                        messageContent.startsWith(`${commandPrefix}server`)
                     ) {
                         const perfData = performance.toJSON();
 
@@ -101,7 +101,9 @@ const botCommands = (bot, validGroups, botJid) => {
                         // Server OS Stats
                         const osPlatform = toTitleCase(osUtils.os.platform());
                         let osDistro;
-                        osUtils.os.oos().then((info) => (osDistro = info));
+                        osUtils.os.oos().then((info) => {
+                            osDistro = info === undefined ? "" : info;
+                        });
                         const osArch = osUtils.os.arch();
 
                         const stats = {

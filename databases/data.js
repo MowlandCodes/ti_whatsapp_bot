@@ -46,7 +46,7 @@ const unknownCommand = `
 const serverMon = (serverStats) => {
     return `📊 *Server Status* 📊
 
-\`RUNTIME\` => *${serverStats.runtime} seconds*
+\`RUNTIME\` => *${serverStats.runtime} miliseconds*
 
 *OS INFO*
 \`PLATFORM\` => *${serverStats.osPlatform} ${serverStats.osDistro} ${serverStats.osArch}*
