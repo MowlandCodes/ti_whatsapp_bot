@@ -28,6 +28,9 @@ Berikut adalah beberapa menu yang saya sediakan untuk kalian berdasarkan kategor
 
 *LAINNYA*:
 * \`/server\` : Menampilkan informasi tentang server 📊
+* \`@everyone [text]\` : Men-tag semua anggota grup 📣
+
+> Untuk menjalankan perintah dengan bot pastikan untuk *Men-tag bot di grup anda* *_kecuali perintah pada bagian LAINNYA_*. Contoh: \`@bot [perintah]\`
 `;
 
 const unknownCommand = `

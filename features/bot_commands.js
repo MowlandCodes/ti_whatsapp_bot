@@ -1,8 +1,9 @@
 const { getUrlInfo } = require("baileys");
 const { menuText, unknownCommand } = require("../databases/data");
 const { commandPrefix } = require("../databases/settings");
+const { REDBG, RED } = require("../util/user_interaction");
 
-const botCommands = (bot, validGroups, botNumber) => {
+const botCommands = (bot, validGroups, botJid) => {
     bot.ev.on("messages.upsert", async (event) => {
         const latest_message = event.messages[0]; // Get the latest message
 
@@ -25,25 +26,51 @@ const botCommands = (bot, validGroups, botNumber) => {
                         ?.mentionedJid || [];
 
                 // Run command in the group only if the bot is mentioned
-                if (mentions.includes(botNumber)) {
+                if (mentions.includes(botJid)) {
                     if (messageContent.includes(`${commandPrefix}help`)) {
-                        const linkPreview = await getUrlInfo(
-                            "https://github.com/mowlandcodes/ti_whatsapp_bot",
-                            {
-                                thumbnailWidth: 1024,
-                                fetchOpts: { timeout: 5000 },
-                                uploadImage: bot.waUploadToServer,
-                            },
+                        try {
+                            const linkPreview = await getUrlInfo(
+                                "https://github.com/mowlandcodes/ti_whatsapp_bot.git",
+                                {
+                                    thumbnailWidth: 1024,
+                                    fetchOpts: { timeout: 5000 },
+                                    uploadImage: bot.waUploadToServer,
+                                },
+                            );
+
+                            await bot.sendMessage(groupJid, {
+                                text: menuText,
+                                linkPreview,
+                            });
+                        } catch (err) {
+                            console.log(
+                                `${REDBG("ERROR")} ${RED("Caught exception")}: ${err}`,
+                            );
+
+                            await bot.sendMessage(groupJid, {
+                                text: menuText,
+                            });
+                        }
+                    } else {
+                        if (!latest_message.key?.fromMe) {
+                            await bot.sendMessage(groupJid, {
+                                text: unknownCommand,
+                                mentions: [senderJid],
+                            });
+                        }
+                    }
+                } else {
+                    // Commands that run when bot is not mentioned
+
+                    // Tag All Group Members
+                    if (messageContent.startsWith("@everyone")) {
+                        const groupMembers = groupMetadata.participants.map(
+                            (participant) => participant.id,
                         );
 
                         await bot.sendMessage(groupJid, {
-                            text: menuText,
-                            linkPreview,
-                        });
-                    } else {
-                        await bot.sendMessage(groupJid, {
-                            text: unknownCommand,
-                            mentions: [senderJid],
+                            text: `> 📢 *@${senderJid.split("@")[0]} men-tag semua anggota grup*`,
+                            mentions: groupMembers,
                         });
                     }
                 }
