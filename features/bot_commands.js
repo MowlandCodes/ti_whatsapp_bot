@@ -240,8 +240,11 @@ ${currentJadwalA2}
                             );
 
                             const isSenderAdmin =
-                                participant?.isAdmin ||
-                                participant?.isSuperAdmin;
+                                participant?.admin === "superadmin" ||
+                                participant?.admin === "admin";
+
+                            console.log(participant);
+                            console.log(isSenderAdmin);
 
                             if (isSenderAdmin) {
                                 const groupMembers =
