@@ -1,4 +1,4 @@
-const { getUrlInfo } = require("baileys");
+const { getUrlInfo, jidNormalizedUser } = require("baileys");
 const { menuText, unknownCommand, serverMon } = require("../databases/data");
 const {
     commandPrefix,
@@ -231,13 +231,17 @@ ${currentJadwalA2}
                                 .trim()
                                 .startsWith(`${commandPrefix}antitoxic`)
                         ) {
+                            const normalizedUserJid =
+                                jidNormalizedUser(senderJid);
+                            const participant = groupMetadata.participants.find(
+                                (p) =>
+                                    jidNormalizedUser(p.id) ===
+                                    normalizedUserJid,
+                            );
+
                             const isSenderAdmin =
-                                groupMetadata.participants.find(
-                                    (participant) =>
-                                        participant.id === senderJid &&
-                                        (participant.isAdmin ||
-                                            participant.isSuperAdmin),
-                                );
+                                participant?.isAdmin ||
+                                participant?.isSuperAdmin;
 
                             if (isSenderAdmin) {
                                 const groupMembers =
