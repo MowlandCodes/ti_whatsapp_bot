@@ -7,6 +7,11 @@ const {
 } = require("./user_interaction");
 
 module.exports = {
+    /**
+     * @param {import("baileys").WASocket} bot
+     * @param {string[]} validGroups
+     * @param {string} botNumber
+     */
     chatLog: async (bot, validGroups, botNumber) => {
         bot.ev.on("messages.upsert", async (event) => {
             const latest_message = event.messages[0];

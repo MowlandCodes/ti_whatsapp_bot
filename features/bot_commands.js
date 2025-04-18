@@ -5,6 +5,11 @@ const { REDBG, RED } = require("../util/user_interaction");
 const osUtils = require("node-os-utils");
 const { toTitleCase } = require("../util");
 
+/**
+ * @param {import("baileys").WASocket} bot
+ * @param {string[]} validGroups
+ * @param {string} botJid
+ */
 const botCommands = (bot, validGroups, botJid) => {
     bot.ev.on("messages.upsert", async (event) => {
         const latest_message = event.messages[0]; // Get the latest message
@@ -14,17 +19,25 @@ const botCommands = (bot, validGroups, botJid) => {
         const senderJid = latest_message.key?.participant;
 
         if (isGroup) {
-            const groupMetadata = await bot.groupMetadata(latest_message.key?.remoteJid);
+            const groupMetadata = await bot.groupMetadata(
+                latest_message.key?.remoteJid,
+            );
             const groupName = groupMetadata.subject;
             if (validGroups.includes(groupName)) {
                 const messageContent =
-                    latest_message.message?.extendedTextMessage?.text || latest_message.message?.conversation;
+                    latest_message.message?.extendedTextMessage?.text ||
+                    latest_message.message?.conversation;
 
-                const mentions = latest_message.message?.extendedTextMessage?.contextInfo?.mentionedJid || [];
+                const mentions =
+                    latest_message.message?.extendedTextMessage?.contextInfo
+                        ?.mentionedJid || [];
 
                 // Run command in the group only if the bot is mentioned
                 if (mentions.includes(botJid)) {
-                    if (messageContent === `@${botJid.split("@")[0]} ${commandPrefix}help`) {
+                    if (
+                        messageContent ===
+                        `@${botJid.split("@")[0]} ${commandPrefix}help`
+                    ) {
                         try {
                             const linkPreview = await getUrlInfo(
                                 "https://github.com/mowlandcodes/ti_whatsapp_bot.git",
@@ -32,7 +45,7 @@ const botCommands = (bot, validGroups, botJid) => {
                                     thumbnailWidth: 1024,
                                     fetchOpts: { timeout: 5000 },
                                     uploadImage: bot.waUploadToServer,
-                                }
+                                },
                             );
 
                             await bot.sendMessage(groupJid, {
@@ -40,7 +53,9 @@ const botCommands = (bot, validGroups, botJid) => {
                                 linkPreview,
                             });
                         } catch (err) {
-                            console.log(`${REDBG("ERROR")} ${RED("Caught exception")}: ${err}`);
+                            console.log(
+                                `${REDBG("ERROR")} ${RED("Caught exception")}: ${err}`,
+                            );
 
                             await bot.sendMessage(groupJid, {
                                 text: menuText,
@@ -59,13 +74,17 @@ const botCommands = (bot, validGroups, botJid) => {
 
                     // Tag All Group Members
                     if (messageContent.startsWith("@everyone")) {
-                        const groupMembers = groupMetadata.participants.map((participant) => participant.id);
+                        const groupMembers = groupMetadata.participants.map(
+                            (participant) => participant.id,
+                        );
 
                         await bot.sendMessage(groupJid, {
                             text: `> 📢 *@${senderJid.split("@")[0]} men-tag semua anggota grup*`,
                             mentions: groupMembers,
                         });
-                    } else if (messageContent.startsWith(`${commandPrefix}server`)) {
+                    } else if (
+                        messageContent.startsWith(`${commandPrefix}server`)
+                    ) {
                         const perfData = performance.toJSON();
 
                         // Server Runtime

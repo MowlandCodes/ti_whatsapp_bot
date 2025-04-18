@@ -1,3 +1,5 @@
+const badwordsEn = require("badwords-list");
+
 const validGroups = [
     "Testing bot TI",
     "Komunitas laptop bajakan",
@@ -5,8 +7,190 @@ const validGroups = [
     "HECKER PRO PO",
 ];
 
-const menuText = `
-🎓 *Selamat datang di  _Prodi Teknik Informatika Semester 3_* 🎓
+const badWordsEn = badwordsEn.array;
+
+const badWordsId = [
+    "alay",
+    "ampas",
+    "ajg",
+    "anjing",
+    "anjir",
+    "antek",
+    "asing",
+    "ateis",
+    "autis",
+    "ayam kampus",
+    "babi",
+    "bacot",
+    "bajingan",
+    "banci",
+    "bandot",
+    "bangkai",
+    "bangsat",
+    "bani",
+    "bani kotak",
+    "bego",
+    "bejat",
+    "bencong",
+    "berak",
+    "berengsek",
+    "bispak",
+    "bisu",
+    "bisyar",
+    "bodoh",
+    "bokep",
+    "bokong",
+    "bong",
+    "buaya",
+    "budek",
+    "burik",
+    "buta",
+    "cacat",
+    "cct",
+    "cebong",
+    "celeng",
+    "cocot",
+    "congor",
+    "culun",
+    "cungkring",
+    "cupu",
+    "dongok",
+    "dungu",
+    "entot",
+    "edan",
+    "gay",
+    "geblek",
+    "gembel",
+    "gembrot",
+    "gendut",
+    "gila",
+    "goblok",
+    "hina",
+    "homo",
+    "iblis",
+    "idiot",
+    "jablay",
+    "jamban",
+    "jancuk",
+    "jembud",
+    "jembut",
+    "jijik",
+    "kntl",
+    "kacrut",
+    "kafir",
+    "kancut",
+    "kampang",
+    "kampret",
+    "kampungan",
+    "kejam",
+    "keparat",
+    "kntl",
+    "komunis",
+    "kontol",
+    "koreng",
+    "krempeng",
+    "kunti",
+    "kimak",
+    "kunyuk",
+    "lengser",
+    "lesbi",
+    "lgbt",
+    "lonte",
+    "me2k",
+    "mampus",
+    "memek",
+    "modar",
+    "monyet",
+    "mucikari",
+    "munafik",
+    "najis",
+    "nenen",
+    "nete",
+    "ngaceng",
+    "ngentot",
+    "ngewe",
+    "nista",
+    "noob",
+    "onta",
+    "panasbung",
+    "panastak",
+    "pantat",
+    "pecun",
+    "perek",
+    "picek",
+    "porno",
+    "puki",
+    "pler",
+    "peler",
+    "rejim",
+    "rezim",
+    "sampah",
+    "sange",
+    "sarap",
+    "seks",
+    "serbet",
+    "setan",
+    "silit",
+    "sinting",
+    "sipit",
+    "sitip",
+    "sompret",
+    "sontoloyo",
+    "tai",
+    "tol",
+    "taplak",
+    "terkutuk",
+    "titit",
+    "tolol",
+    "transgendertuyul",
+    "udik",
+    "kafir",
+    "dancok",
+    "asu",
+    "genjit",
+    "monyet",
+    "jelek",
+    "pukimak",
+    "mesum",
+    "kotl",
+    "anjeng",
+    "gblk",
+    "taik",
+    "tai",
+    "gelud",
+    "cerewet",
+    "jancok",
+    "bgsd",
+    "xhamster.com",
+    "kimax",
+    "pelacur",
+    "germo",
+    "crot",
+    "pekok",
+    "dunguk",
+    "bajang",
+    "songong",
+    "tempik",
+    "meki",
+    "bgst",
+    "mani",
+    "pejuh",
+    "sepong",
+    "cipok",
+    "ngewek",
+    "bdsm",
+    "pantek",
+    "kimboknya",
+    "burit",
+    "genjek",
+    "nyepong",
+    "tobrut",
+    "toket",
+    "cacat",
+    "tepos",
+];
+
+const menuText = `🎓 *Selamat datang di  _Prodi Teknik Informatika Semester 3_* 🎓
 
 -----------------------------------------------
 *OWNER* : *\`MowlandCodes\`*
@@ -22,27 +206,25 @@ di *Universitas Darussalam Gontor*
 Berikut adalah beberapa menu yang saya sediakan untuk kalian berdasarkan kategori:
 
 🤴🏻 *MENU ADMIN* 🤴🏻 : 
-* \`/up_info_a1\` : Mengupdate informasi kuliah untuk *kelas A1* 
-* \`/up_info_a2\` : Mengupdate informasi kuliah untuk *kelas A2* 
+* \`/up_info_a1\` *_not available_* : Mengupdate informasi kuliah untuk *kelas A1* 
+* \`/up_info_a2\` *_not available_* : Mengupdate informasi kuliah untuk *kelas A2* 
+* \`/antitoxic\` *_not available_* : Mengaktifkan/Nonaktifkan fitur *anti-toxic*
 
 *PERKULIAHAN* :
 * \`/help\` : Untuk melihat menu 📜
-* \`/info_kuliah\` : Menampilkan jadwal dan info kuliah terdekat 📋
-* \`/list_matakuliah\` : Menampilkan daftar matakuliah dan dosen yang mengampu 📑
-* \`/list_tugas\` : List tugas yang diberikan oleh dosen 📚
+* \`/info_kuliah\` *_not available_* : Menampilkan jadwal dan info kuliah terdekat 📋
+* \`/list_matakuliah\` *_not available_* : Menampilkan daftar matakuliah dan dosen yang mengampu 📑
+* \`/list_tugas\` *_not available_* : List tugas yang diberikan oleh dosen 📚
 
 *LAINNYA*:
 * \`/server\` : Menampilkan informasi tentang server 📊
 * \`@everyone [text]\` : Men-tag semua anggota grup 📣
 
-> Untuk menjalankan perintah dengan bot pastikan untuk *Men-tag bot di grup anda* *_kecuali perintah pada bagian LAINNYA_*. Contoh: \`@bot [perintah]\`
-`;
+> Untuk menjalankan perintah dengan bot pastikan untuk *Men-tag bot di grup anda* *_kecuali perintah pada bagian LAINNYA_*. Contoh: \`@bot [perintah]\``;
 
-const unknownCommand = `
-⛔ Perintah anda *tidak dapat dikenal* oleh *Sobat Kuliah* ⛔
+const unknownCommand = `⛔ Perintah anda *tidak dapat dikenal* oleh *Sobat Kuliah* ⛔
 
-> Ketik \`/help\` untuk mendapatkan bantuan dari *Sobat Kuliah* 
-`;
+> Ketik \`/help\` untuk mendapatkan bantuan dari *Sobat Kuliah*`;
 
 const serverMon = (serverStats) => {
     return `📊 *Server Status* 📊
@@ -75,4 +257,6 @@ module.exports = {
     menuText,
     unknownCommand,
     serverMon,
+    badWordsEn,
+    badWordsId,
 };
