@@ -1,7 +1,7 @@
 const { getUrlInfo, jidNormalizedUser } = require("baileys");
 const { menuText, unknownCommand, serverMon } = require("../databases/data");
 const { commandPrefix } = require("../databases/settings");
-const { REDBG, RED } = require("../util/user_interaction");
+const { REDBG, RED, BLUEBG, BLUE } = require("../util/user_interaction");
 const osUtils = require("node-os-utils");
 const { toTitleCase } = require("../util");
 const { filterBadWords } = require("./antitoxic");
