@@ -5,28 +5,23 @@ const { isJidGroup } = require("baileys");
  * @param {import("baileys").WASocket} bot
  * @param {import("baileys").WAMessage} msgObj
  * @param {Set<string>} forbiddenWords
- * @param {string[]} validGroups
- * @returns Promise<void>
+ * @returns Promise<boolean>
  */
-const filterBadWords = async (bot, msgObj, forbiddenWords, validGroups) => {
+const filterBadWords = async (bot, msgObj, forbiddenWords) => {
     try {
         // Pastiin ada pesan
-        if (!msgObj.message) return;
+        if (!msgObj.message) return false;
 
         const chatJid = msgObj.key.remoteJid;
 
-        if (!chatJid || isJidGroup(chatJid)) return; // Hanya Filter pesan yang datang dari group
+        if (!chatJid || !isJidGroup(chatJid)) return false; // Hanya Filter pesan yang datang dari group
 
-        const groupMetadata = await bot.groupMetadata(chatJid);
-        const groupName = groupMetadata?.subject;
-
-        if (!validGroups.includes(groupName)) return; // Hanya Filter pesan yang datang dari group yg valid
-        if (msgObj.key.fromMe) return; // Hanya Filter pesan yang bukan dari bot
+        if (msgObj.key.fromMe) return false; // Hanya Filter pesan yang bukan dari bot
 
         const senderJid = msgObj.key.participant; // Pengirim dari group
         if (!senderJid) {
             console.log(`${REDBG("ERROR")} ${RED("Pengirim tidak ditemukan")}`);
-            return;
+            return false;
         }
 
         // Isi Pesan
@@ -36,21 +31,27 @@ const filterBadWords = async (bot, msgObj, forbiddenWords, validGroups) => {
             msgObj.message?.imageMessage?.caption ||
             msgObj.message?.videoMessage?.caption;
 
-        if (!messageContent) return; // Hanya Filter pesan yang berisi teks
+        if (!messageContent) return false; // Hanya Filter pesan yang berisi teks
 
         let isBadWord = false;
 
         const messageContentLower = messageContent.toLowerCase();
 
-        for (const word of forbiddenWords) {
+        // for (const word of forbiddenWords) {
+        //     const escapedWord = word.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+        //     const regex = new RegExp(`\\b${escapedWord}\\b`, "i");
+        //
+        //     if (regex.test(messageContentLower)) {
+        //         isBadWord = true;
+        //         break;
+        //     }
+        // }
+        isBadWord = Array.from(forbiddenWords).some((word) => {
             const escapedWord = word.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
             const regex = new RegExp(`\\b${escapedWord}\\b`, "i");
 
-            if (regex.test(messageContentLower)) {
-                isBadWord = true;
-                break;
-            }
-        }
+            return regex.test(messageContentLower);
+        });
 
         if (isBadWord) {
             console.log(
@@ -80,18 +81,19 @@ const filterBadWords = async (bot, msgObj, forbiddenWords, validGroups) => {
                     mentions: [senderJid],
                 });
 
-                return;
+                return true;
             } catch (err) {
                 console.log(
                     `${REDBG("ERROR")} ${RED("Terjadi kesalahan saat mencoba menghapus pesan")}`,
                 );
                 console.log(`${REDBG("ERROR")} ${RED("Error:")} ${err}`);
-                return;
+                return false;
             }
         }
+        return false;
     } catch (err) {
         console.log(`${REDBG("ERROR")} ${RED("Caught exception")}: ${err}`);
-        return;
+        return false;
     }
 };
 

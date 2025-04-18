@@ -1,4 +1,4 @@
-const { getUrlInfo, jidNormalizedUser } = require("baileys");
+const { getUrlInfo, jidNormalizedUser, isJidGroup } = require("baileys");
 const { menuText, unknownCommand, serverMon } = require("../databases/data");
 const { commandPrefix } = require("../databases/settings");
 const { REDBG, RED, BLUEBG, BLUE } = require("../util/user_interaction");
@@ -39,23 +39,16 @@ const antiToxicToggle = () => {
  * @returns Promise<void>
  */
 const botCommands = (bot, validGroups, botJid) => {
+    const badWords = new Set([...badWordsEn, ...badWordsId]);
+
     bot.ev.on("messages.upsert", async (event) => {
         const latest_message = event.messages[0]; // Get the latest message
         if (!latest_message.message) return; // Ignore messages without content
 
-        const isGroup = latest_message.key?.remoteJid.endsWith("@g.us");
+        const isGroup = isJidGroup(latest_message.key?.remoteJid);
         const groupJid = latest_message.key?.remoteJid;
         const senderJid =
             latest_message.key?.participant || latest_message.key?.remoteJid; // Participant in group, remoteJid in PM
-
-        const badWords = new Set(badWordsEn.concat(badWordsId));
-
-        if (antiToxic) {
-            await filterBadWords(bot, latest_message, badWords); // Deleted Message that contains bad words
-            console.log(
-                `${BLUEBG("INFO")} ${BLUE("Anti Toxic status: ")}${antiToxic}`,
-            );
-        }
 
         if (isGroup) {
             try {
@@ -64,6 +57,23 @@ const botCommands = (bot, validGroups, botJid) => {
                 const groupName = groupMetadata.subject;
 
                 if (validGroups.includes(groupName)) {
+                    // Check for Message containing bad words
+                    if (antiToxic) {
+                        const wasFiltered = await filterBadWords(
+                            bot,
+                            latest_message,
+                            badWords,
+                            validGroups,
+                        ); // Deleted Message that contains bad words
+
+                        if (wasFiltered) {
+                            console.log(
+                                `${BLUEBG("INFO")} ${BLUE("Message deleted because it contained bad words")}`,
+                            );
+                            return;
+                        }
+                    }
+
                     const messageContent =
                         latest_message.message?.extendedTextMessage?.text ||
                         latest_message.message?.conversation ||
