@@ -1,10 +1,6 @@
 const { getUrlInfo, jidNormalizedUser } = require("baileys");
 const { menuText, unknownCommand, serverMon } = require("../databases/data");
-const {
-    commandPrefix,
-    antiToxic,
-    antiToxicToggle,
-} = require("../databases/settings");
+const { commandPrefix } = require("../databases/settings");
 const { REDBG, RED } = require("../util/user_interaction");
 const osUtils = require("node-os-utils");
 const { toTitleCase } = require("../util");
@@ -24,6 +20,17 @@ const jadwalStore = createStore((set) => ({
 const unsubscribe = jadwalStore.subscribe((newState) =>
     console.log("Jadwal Store Updated:", newState),
 );
+
+let antiToxic = false;
+/*
+ * @returns Promise<boolean>
+ */
+const antiToxicToggle = () => {
+    return new Promise((resolve) => {
+        antiToxic = !antiToxic;
+        resolve(antiToxic);
+    });
+};
 
 /**
  * @param {import("baileys").WASocket} bot
@@ -45,6 +52,9 @@ const botCommands = (bot, validGroups, botJid) => {
 
         if (antiToxic) {
             await filterBadWords(bot, latest_message, badWords); // Deleted Message that contains bad words
+            console.log(
+                `${BLUEBG("INFO")} ${BLUE("Anti Toxic status: ")}${antiToxic}`,
+            );
         }
 
         if (isGroup) {
