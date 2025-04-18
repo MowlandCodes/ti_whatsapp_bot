@@ -208,7 +208,7 @@ Berikut adalah beberapa menu yang saya sediakan untuk kalian berdasarkan kategor
 🤴🏻 *MENU ADMIN* 🤴🏻 : 
 * \`/up_info_a1\` *_not available_* : Mengupdate informasi kuliah untuk *kelas A1* 
 * \`/up_info_a2\` *_not available_* : Mengupdate informasi kuliah untuk *kelas A2* 
-* \`/antitoxic\` *_not available_* : Mengaktifkan/Nonaktifkan fitur *anti-toxic*
+* \`/antitoxic\` : Mengaktifkan/Nonaktifkan fitur *anti-toxic*
 
 *PERKULIAHAN* :
 * \`/help\` : Untuk melihat menu 📜

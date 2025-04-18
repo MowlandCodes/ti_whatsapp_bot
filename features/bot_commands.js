@@ -1,14 +1,21 @@
 const { getUrlInfo } = require("baileys");
 const { menuText, unknownCommand, serverMon } = require("../databases/data");
-const { commandPrefix } = require("../databases/settings");
+const {
+    commandPrefix,
+    antiToxic,
+    antiToxicToggle,
+} = require("../databases/settings");
 const { REDBG, RED } = require("../util/user_interaction");
 const osUtils = require("node-os-utils");
 const { toTitleCase } = require("../util");
+const { filterBadWords } = require("./antitoxic");
+const { badWordsEn, badWordsId } = require("../databases/data");
 
 /**
  * @param {import("baileys").WASocket} bot
  * @param {string[]} validGroups
  * @param {string} botJid
+ * @returns Promise<void>
  */
 const botCommands = (bot, validGroups, botJid) => {
     bot.ev.on("messages.upsert", async (event) => {
@@ -18,6 +25,12 @@ const botCommands = (bot, validGroups, botJid) => {
         const groupJid = latest_message.key?.remoteJid;
         const senderJid = latest_message.key?.participant;
 
+        const badWords = new Set(badWordsEn.concat(badWordsId));
+
+        if (antiToxic) {
+            await filterBadWords(bot, latest_message, badWords); // Deleted Message that contains bad words
+        }
+
         if (isGroup) {
             const groupMetadata = await bot.groupMetadata(
                 latest_message.key?.remoteJid,
@@ -26,7 +39,9 @@ const botCommands = (bot, validGroups, botJid) => {
             if (validGroups.includes(groupName)) {
                 const messageContent =
                     latest_message.message?.extendedTextMessage?.text ||
-                    latest_message.message?.conversation;
+                    latest_message.message?.conversation ||
+                    latest_message.message.imageMessage?.caption ||
+                    latest_message.message.videoMessage?.caption;
 
                 const mentions =
                     latest_message.message?.extendedTextMessage?.contextInfo
@@ -136,6 +151,22 @@ const botCommands = (bot, validGroups, botJid) => {
                             text: serverStats,
                             mentions: [senderJid],
                         });
+                    } else if (messageContent === `${commandPrefix}antitoxic`) {
+                        antiToxic = antiToxicToggle();
+                        const groupMembers = groupMetadata.participants.map(
+                            (participant) => participant.id,
+                        );
+
+                        if (antiToxic === true) {
+                            bot.sendMessage(groupJid, {
+                                text: `🔔 *Fitur Anti-Toxic _diaktifkan_* 🔔`,
+                                mentions: groupMembers,
+                            });
+                        } else {
+                            bot.sendMessage(groupJid, {
+                                text: `🔔 *Fitur Anti-Toxic _di-nonaktifkan_* 🔔`,
+                            });
+                        }
                     }
                 }
             }
