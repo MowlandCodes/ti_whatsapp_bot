@@ -89,8 +89,6 @@ const botCommands = (bot, validGroups, botJid) => {
                     // --- Commands requiring bot mention ---
                     if (mentions.includes(botJid)) {
                         const commandHelp = `${botMentionTag} ${commandPrefix}help`;
-                        const commandUpdateA1 = `${botMentionTag} ${commandPrefix}up_info_a1`; // Note: Check start, not includes
-                        const commandUpdateA2 = `${botMentionTag} ${commandPrefix}up_info_a2`;
                         const commandInfoKuliah = `${botMentionTag} ${commandPrefix}info_kuliah`;
 
                         // Use startsWith for more reliable command matching
@@ -114,48 +112,6 @@ const botCommands = (bot, validGroups, botJid) => {
                                 );
                                 await bot.sendMessage(groupJid, {
                                     text: menuText,
-                                });
-                            }
-                        } else if (messageContent.startsWith(commandUpdateA1)) {
-                            const scheduleText = messageContent
-                                .substring(commandUpdateA1.length)
-                                .trim();
-
-                            if (scheduleText) {
-                                jadwalStore
-                                    .getState()
-                                    .updateJadwalA1(scheduleText);
-                                await bot.sendMessage(groupJid, {
-                                    text: `*Jadwal A1 Berhasil disimpan* ✅`,
-                                });
-                            } else {
-                                await bot.sendMessage(groupJid, {
-                                    text: `Format Salah! ❌
-Contoh Format:
-${commandUpdateA1} 
-1. Sistem Operasi (Jam Ke-1 | Lab Lt.1)
-2. ...`,
-                                });
-                            }
-                        } else if (messageContent.startsWith(commandUpdateA2)) {
-                            const scheduleText = messageContent
-                                .substring(commandUpdateA2.length)
-                                .trim();
-
-                            if (scheduleText) {
-                                jadwalStore
-                                    .getState()
-                                    .updateJadwalA2(scheduleText);
-                                await bot.sendMessage(groupJid, {
-                                    text: `*Jadwal A2 Berhasil disimpan* ✅`,
-                                });
-                            } else {
-                                await bot.sendMessage(groupJid, {
-                                    text: `Format Salah! ❌
-Contoh Format:
-${commandUpdateA1} 
-1. Sistem Operasi (Jam Ke-1 | Lab Lt.1)
-2. ...`,
                                 });
                             }
                         } else if (
@@ -191,6 +147,8 @@ ${currentJadwalA2}
                         }
                     } else {
                         // --- Commands that run when bot is NOT mentioned ---
+                        const commandUpdateA1 = `${commandPrefix}up_info_a1`;
+                        const commandUpdateA2 = `${commandPrefix}up_info_a2`;
 
                         // Tag All Group Members
                         if (messageContent.startsWith("@everyone")) {
@@ -270,12 +228,103 @@ ${currentJadwalA2}
                                     );
                                 const state = await antiToxicToggle();
                                 await bot.sendMessage(groupJid, {
-                                    text: `⚠️ *Anti Toxic telah diaktifkan oleh Admin* ⚠️\n> _Status: ${state}_`,
+                                    text: `⚠️ *Anti Toxic telah di${state === true ? "aktif" : "nonaktif"}kan oleh Admin* ⚠️\n> _Status: ${state}_`,
                                     mentions: groupMembers,
                                 });
                             } else {
                                 await bot.sendMessage(groupJid, {
                                     text: "⛔ *Perintah ini khusus untuk Admin Group* ⛔",
+                                    mentions: [senderJid],
+                                });
+                            }
+                        } else if (messageContent.startsWith(commandUpdateA1)) {
+                            const normalizedUserJid =
+                                jidNormalizedUser(senderJid);
+                            const participant = groupMetadata.participants.find(
+                                (p) =>
+                                    jidNormalizedUser(p.id) ===
+                                    normalizedUserJid,
+                            );
+
+                            const isSenderAdmin =
+                                participant?.admin === "superadmin" ||
+                                participant?.admin === "admin";
+
+                            if (isSenderAdmin) {
+                                const scheduleText = messageContent
+                                    .substring(commandUpdateA1.length)
+                                    .trim();
+
+                                if (scheduleText) {
+                                    jadwalStore
+                                        .getState()
+                                        .updateJadwalA1(scheduleText);
+                                    await bot.sendMessage(groupJid, {
+                                        text: `*Jadwal A1 Berhasil disimpan* ✅`,
+                                    });
+                                } else {
+                                    await bot.sendMessage(groupJid, {
+                                        text: `*Format Salah!* ❌
+Contoh Format:
+${commandUpdateA1} 
+1. Sistem Operasi (Jam Ke-1 | Lab Lt.1)
+2. ...`,
+                                    });
+                                }
+                            } else {
+                                await bot.sendMessage(groupJid, {
+                                    text: "⛔ *Perintah ini khusus untuk Admin Group* ⛔",
+                                    mentions: [senderJid],
+                                });
+                            }
+                        } else if (messageContent.startsWith(commandUpdateA2)) {
+                            const normalizedUserJid =
+                                jidNormalizedUser(senderJid);
+                            const participant = groupMetadata.participants.find(
+                                (p) =>
+                                    jidNormalizedUser(p.id) ===
+                                    normalizedUserJid,
+                            );
+
+                            const isSenderAdmin =
+                                participant?.admin === "superadmin" ||
+                                participant?.admin === "admin";
+
+                            if (isSenderAdmin) {
+                                const scheduleText = messageContent
+                                    .substring(commandUpdateA2.length)
+                                    .trim();
+
+                                if (scheduleText) {
+                                    jadwalStore
+                                        .getState()
+                                        .updateJadwalA2(scheduleText);
+                                    await bot.sendMessage(groupJid, {
+                                        text: `*Jadwal A2 Berhasil disimpan* ✅`,
+                                    });
+                                } else {
+                                    await bot.sendMessage(groupJid, {
+                                        text: `*Format Salah!* ❌
+Contoh Format:
+${commandUpdateA1} 
+1. Sistem Operasi (Jam Ke-1 | Lab Lt.1)
+2. ...`,
+                                    });
+                                }
+                            } else {
+                                await bot.sendMessage(groupJid, {
+                                    text: "⛔ *Perintah ini khusus untuk Admin Group* ⛔",
+                                    mentions: [senderJid],
+                                });
+                            }
+                        } else {
+                            // Avoid replying to own messages if logic gets complex
+                            if (
+                                !latest_message.key?.fromMe &&
+                                messageContent.startsWith(botMentionTag)
+                            ) {
+                                await bot.sendMessage(groupJid, {
+                                    text: unknownCommand,
                                     mentions: [senderJid],
                                 });
                             }
