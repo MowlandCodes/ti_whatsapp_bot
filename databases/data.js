@@ -208,7 +208,6 @@ Berikut adalah beberapa menu yang saya sediakan untuk kalian berdasarkan kategor
 🤴🏻 *MENU ADMIN* 🤴🏻 : 
 * \`/up_info_a1\` : Mengupdate informasi kuliah untuk *kelas A1* 
 * \`/up_info_a2\` : Mengupdate informasi kuliah untuk *kelas A2* 
-* \`/antitoxic\` : Mengaktifkan/Nonaktifkan fitur *anti-toxic*
 
 *PERKULIAHAN* :
 * \`/help\` : Untuk melihat menu 📜
@@ -218,6 +217,7 @@ Berikut adalah beberapa menu yang saya sediakan untuk kalian berdasarkan kategor
 
 *LAINNYA*:
 * \`/server\` : Menampilkan informasi tentang server 📊
+* \`/antitoxic\` : Mengaktifkan/Nonaktifkan fitur *anti-toxic* \`*Khusus Admin*\`
 * \`@everyone [text]\` : Men-tag semua anggota grup 📣
 
 > Untuk menjalankan perintah dengan bot pastikan untuk *Men-tag bot di grup anda* *_kecuali perintah pada bagian LAINNYA_*. Contoh: \`@bot [perintah]\``;

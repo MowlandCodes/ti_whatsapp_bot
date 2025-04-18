@@ -72,7 +72,6 @@ const botCommands = (bot, validGroups, botJid) => {
                         const commandUpdateA1 = `${botMentionTag} ${commandPrefix}up_info_a1`; // Note: Check start, not includes
                         const commandUpdateA2 = `${botMentionTag} ${commandPrefix}up_info_a2`;
                         const commandInfoKuliah = `${botMentionTag} ${commandPrefix}info_kuliah`;
-                        const commandAntiToxicToggle = `${botMentionTag} ${commandPrefix}antitoxic`;
 
                         // Use startsWith for more reliable command matching
                         if (messageContent.trim() === commandHelp) {
@@ -158,33 +157,6 @@ ${currentJadwalA2}
 
 > _*Jadwal dapat berubah sewaktu-waktu*_, tergantung dengan kondisi kelas.`,
                             });
-                        } else if (
-                            messageContent.trim() === commandAntiToxicToggle
-                        ) {
-                            const isSenderAdmin =
-                                groupMetadata.participants.find(
-                                    (participant) =>
-                                        participant.id === senderJid &&
-                                        (participant.isAdmin ||
-                                            participant.isSuperAdmin),
-                                );
-
-                            if (isSenderAdmin) {
-                                const groupMembers =
-                                    groupMetadata.participants.map(
-                                        (participant) => participant.id,
-                                    );
-                                await antiToxicToggle();
-                                await bot.sendMessage(groupJid, {
-                                    text: "⚠️ *Anti Toxic telah diaktifkan oleh Admin* ⚠️",
-                                    mentions: groupMembers,
-                                });
-                            } else {
-                                await bot.sendMessage(groupJid, {
-                                    text: "⛔ *Perintah ini khusus untuk Admin Group* ⛔",
-                                    mentions: [senderJid],
-                                });
-                            }
                         } else {
                             // Avoid replying to own messages if logic gets complex
                             if (
@@ -251,6 +223,35 @@ ${currentJadwalA2}
                                 console.log(`${REDBG("ERROR")} : ${err}`);
                                 await bot.sendMessage(groupJid, {
                                     text: `> ❌ *Gagal mendapatkan status server.*`,
+                                    mentions: [senderJid],
+                                });
+                            }
+                        } else if (
+                            messageContent
+                                .trim()
+                                .startsWith(`${commandPrefix}antitoxic`)
+                        ) {
+                            const isSenderAdmin =
+                                groupMetadata.participants.find(
+                                    (participant) =>
+                                        participant.id === senderJid &&
+                                        (participant.isAdmin ||
+                                            participant.isSuperAdmin),
+                                );
+
+                            if (isSenderAdmin) {
+                                const groupMembers =
+                                    groupMetadata.participants.map(
+                                        (participant) => participant.id,
+                                    );
+                                const state = await antiToxicToggle();
+                                await bot.sendMessage(groupJid, {
+                                    text: `⚠️ *Anti Toxic telah diaktifkan oleh Admin* ⚠️\n> _Status: ${state}_`,
+                                    mentions: groupMembers,
+                                });
+                            } else {
+                                await bot.sendMessage(groupJid, {
+                                    text: "⛔ *Perintah ini khusus untuk Admin Group* ⛔",
                                     mentions: [senderJid],
                                 });
                             }

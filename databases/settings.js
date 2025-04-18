@@ -1,8 +1,15 @@
 const commandPrefix = "/";
 
 let antiToxic = false;
+
+/**
+ * @returns Promise<boolean>
+ */
 const antiToxicToggle = () => {
-    antiToxic = !antiToxic;
+    return new Promise((resolve) => {
+        antiToxic = !antiToxic;
+        resolve(antiToxic);
+    });
 };
 
 module.exports = {
