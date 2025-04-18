@@ -197,6 +197,8 @@ Berikut adalah beberapa menu yang saya sediakan untuk kalian berdasarkan kategor
 🤴🏻 *MENU ADMIN* 🤴🏻 : 
 * \`/up_info_a1\` : Mengupdate informasi kuliah untuk *kelas A1* 
 * \`/up_info_a2\` : Mengupdate informasi kuliah untuk *kelas A2* 
+* \`/up_tugas_a1\` : Mengupdate tugas kuliah untuk *kelas A1* 
+* \`/up_tugas_a2\` : Mengupdate tugas kuliah untuk *kelas A2* 
 * \`/antitoxic\` : Mengaktifkan/Nonaktifkan fitur *anti-toxic*
 
 *PERKULIAHAN* :
@@ -241,6 +243,19 @@ const serverMon = (serverStats) => {
 `;
 };
 
+const listMataKuliah = `1. Aljabar Linear (Triana Harmini, M.Pd.)
+2. Desain Antar Muka (Rizfi Syarif, M.Kom.)
+3. English for Academic Purpose (Taufiqurrahman, S.Pd., M.T., PCQI.)
+4. Bahasa Arab Li Aghrad Khassah (Umma Fatayati, S.Pd.I., M.Pd.)
+5. Teori Peluang (Triana Harmini, M.Pd.)
+6. Statistika (Miftahuddin Fahmi, S.Kom, M.Kom.)
+7. Pemrograman Berorientasi Objek (Miftahuddin Fahmi, S.Kom, M.Kom.)
+8. Analisis dan Perancangan Sistem (Widya Kurniawan, M.Kom.)
+9. Basis Data 1 (Aziz Musthafa, S.Kom, M.T.)
+10. Teori Bahasa dan Automata (Faisal Reza Pradhana, S.Kom., M.Kom.)
+11. Sistem Operasi (Eko Prasetio Widhi, S.Kom., M.Kom.)
+`;
+
 module.exports = {
     validGroups,
     menuText,
@@ -248,4 +263,5 @@ module.exports = {
     serverMon,
     badWordsEn,
     badWordsId,
+    listMataKuliah,
 };
