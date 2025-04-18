@@ -243,9 +243,6 @@ ${currentJadwalA2}
                                 participant?.admin === "superadmin" ||
                                 participant?.admin === "admin";
 
-                            console.log(participant);
-                            console.log(isSenderAdmin);
-
                             if (isSenderAdmin) {
                                 const groupMembers =
                                     groupMetadata.participants.map(
