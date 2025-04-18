@@ -206,21 +206,15 @@ di *Universitas Darussalam Gontor*
 Berikut adalah beberapa menu yang saya sediakan untuk kalian berdasarkan kategori:
 
 🤴🏻 *MENU ADMIN* 🤴🏻 : 
-* \`/up_info_a1\` *_not available_* : Mengupdate informasi kuliah untuk *kelas A1* 
-* \`/up_info_a2\` *_not available_* : Mengupdate informasi kuliah untuk *kelas A2* 
+* \`/up_info_a1\` : Mengupdate informasi kuliah untuk *kelas A1* 
+* \`/up_info_a2\` : Mengupdate informasi kuliah untuk *kelas A2* 
 * \`/antitoxic\` : Mengaktifkan/Nonaktifkan fitur *anti-toxic*
 
 *PERKULIAHAN* :
 * \`/help\` : Untuk melihat menu 📜
-<<<<<<< HEAD
-* \`/info_kuliah\` *_not available_* : Menampilkan jadwal dan info kuliah terdekat 📋
-* \`/list_matakuliah\` *_not available_* : Menampilkan daftar matakuliah dan dosen yang mengampu 📑
-* \`/list_tugas\` *_not available_* : List tugas yang diberikan oleh dosen 📚
-=======
 * \`/info_kuliah\` : Menampilkan jadwal dan info kuliah terdekat 📋
 * \`/list_matakuliah\` :Menampilkan daftar matakuliah dan dosen yang mengampu 📑
 * \`/list_tugas\` : List t ugas yang diberikan oleh dosen 📚
->>>>>>> qeem
 
 *LAINNYA*:
 * \`/server\` : Menampilkan informasi tentang server 📊
