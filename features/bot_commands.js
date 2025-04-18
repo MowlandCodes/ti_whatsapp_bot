@@ -4,7 +4,7 @@ const { commandPrefix } = require("../databases/settings");
 const { REDBG, RED } = require("../util/user_interaction");
 const osUtils = require("node-os-utils");
 const { toTitleCase } = require("../util");
-const { create } = require("zustand");
+const { create } = require("zustand/vanilla");
 
 const botCommands = (bot, validGroups, botJid) => {
     bot.ev.on("messages.upsert", async (event) => {
