@@ -212,9 +212,15 @@ Berikut adalah beberapa menu yang saya sediakan untuk kalian berdasarkan kategor
 
 *PERKULIAHAN* :
 * \`/help\` : Untuk melihat menu 📜
+<<<<<<< HEAD
 * \`/info_kuliah\` *_not available_* : Menampilkan jadwal dan info kuliah terdekat 📋
 * \`/list_matakuliah\` *_not available_* : Menampilkan daftar matakuliah dan dosen yang mengampu 📑
 * \`/list_tugas\` *_not available_* : List tugas yang diberikan oleh dosen 📚
+=======
+* \`/info_kuliah\` : Menampilkan jadwal dan info kuliah terdekat 📋
+* \`/list_matakuliah\` :Menampilkan daftar matakuliah dan dosen yang mengampu 📑
+* \`/list_tugas\` : List t ugas yang diberikan oleh dosen 📚
+>>>>>>> qeem
 
 *LAINNYA*:
 * \`/server\` : Menampilkan informasi tentang server 📊
