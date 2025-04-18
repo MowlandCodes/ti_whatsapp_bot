@@ -1,8 +1,4 @@
-const validGroups = [
-    "Testing bot TI",
-    "Komunitas laptop bajakan",
-    "Komunitas Jual Beli Laptop/PC Ponorogo",
-];
+const validGroups = ["Testing bot TI", "Komunitas laptop bajakan", "Komunitas Jual Beli Laptop/PC Ponorogo"];
 
 const menuText = `
 🎓 *Selamat datang di  _Prodi Teknik Informatika Semester 3_* 🎓
@@ -27,8 +23,8 @@ Berikut adalah beberapa menu yang saya sediakan untuk kalian berdasarkan kategor
 *PERKULIAHAN* :
 * \`/help\` : Untuk melihat menu 📜
 * \`/info_kuliah\` : Menampilkan jadwal dan info kuliah terdekat 📋
-* \`/list_matakuliah\` : Menampilkan daftar matakuliah dan dosen yang mengampu 📑
-* \`/list_tugas\` : List tugas yang diberikan oleh dosen 📚
+* \`/list_matakuliah\` :Menampilkan daftar matakuliah dan dosen yang mengampu 📑
+* \`/list_tugas\` : List t ugas yang diberikan oleh dosen 📚
 
 *LAINNYA*:
 * \`/server\` : Menampilkan informasi tentang server 📊

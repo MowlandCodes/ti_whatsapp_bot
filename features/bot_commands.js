@@ -4,6 +4,7 @@ const { commandPrefix } = require("../databases/settings");
 const { REDBG, RED } = require("../util/user_interaction");
 const osUtils = require("node-os-utils");
 const { toTitleCase } = require("../util");
+const { create } = require("zustand");
 
 const botCommands = (bot, validGroups, botJid) => {
     bot.ev.on("messages.upsert", async (event) => {
@@ -12,6 +13,13 @@ const botCommands = (bot, validGroups, botJid) => {
         const isGroup = latest_message.key?.remoteJid.endsWith("@g.us");
         const groupJid = latest_message.key?.remoteJid;
         const senderJid = latest_message.key?.participant;
+
+        const jadwalStore = create((set) => ({
+            jadwalA1: "Belum ada jadwal",
+            jadwalA2: "Belum ada Jadwal",
+            updateJadwalA1: () => set((state) => ({ jadwalA1: jadwalA1 })),
+            updateJadwalA2: () => set((state) => ({ jadwalA2: jadwalA2 })),
+        }));
 
         if (isGroup) {
             const groupMetadata = await bot.groupMetadata(latest_message.key?.remoteJid);
@@ -24,6 +32,11 @@ const botCommands = (bot, validGroups, botJid) => {
 
                 // Run command in the group only if the bot is mentioned
                 if (mentions.includes(botJid)) {
+                    const jadwalA1 = jadwalStore((state) => state.jadwalA1);
+                    const updateJadwalA1 = jadwalStore((state) => state.updateJadwalA1);
+                    const jadwalA2 = jadwalStore((state) => state.jadwalA2);
+                    const updateJadwalA2 = jadwalStore((store) => state.updateJadwalA2);
+
                     if (messageContent === `@${botJid.split("@")[0]} ${commandPrefix}help`) {
                         try {
                             const linkPreview = await getUrlInfo(
@@ -46,6 +59,59 @@ const botCommands = (bot, validGroups, botJid) => {
                                 text: menuText,
                             });
                         }
+                    } else if (messageContent.includes(`${commandPrefix}/up_info_a1`)) {
+                        const seperator = "1";
+                        let result = "";
+                        const seperatorIndex = messageContent.indexOf(seperator);
+
+                        if (seperatorIndex !== -1) {
+                            result = messageContent.slice(seperatorIndex);
+                            updateJadwalA1 = result;
+                        } else {
+                            await bot.sendMessage(groupJid, {
+                                text: `
+                                Silahkan ikuti format ini!
+                                @Sobat Kuliah /help
+                                    1. Mata_Kuliah A1 (9:30 Lab AI)
+                                    2. ....
+                                    3. ..
+                                `,
+                            });
+                        }
+
+                        await bot.sendMessage(groupJid, {
+                            text: `Jadwal Tersimpan ✅`,
+                        });
+                    } else if (messageContent.includes(`${commandPrefix}/up_info_a2`)) {
+                        const seperator = "1";
+                        let result = "";
+                        const seperatorIndex = messageContent.indexOf(seperator);
+
+                        if (seperatorIndex !== -1) {
+                            result = messageContent.slice(seperatorIndex);
+                            updateJadwalA2 = result;
+                        } else {
+                            await bot.sendMessage(groupJid, {
+                                text: `
+                                Silahkan ikuti format ini!
+                                @Sobat Kuliah /help
+                                    1. Mata_Kuliah A2 (9:30 Lab AI)
+                                    2. ....
+                                    3. ..
+                                `,
+                            });
+                        }
+
+                        await bot.sendMessage(groupJid, {
+                            text: `Jadwal Tersimpan ✅`,
+                        });
+                    } else if (messageContent === `@${botJid.split("@")[0]} ${commandPrefix}info_kuliah`) {
+                        await bot.sendMessage(groupJid, {
+                            text: `
+                            ${jadwalA1}
+                            ${jadwalA2}
+                            `,
+                        });
                     } else {
                         if (!latest_message.key?.fromMe) {
                             await bot.sendMessage(groupJid, {
