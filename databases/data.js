@@ -2,6 +2,7 @@ const validGroups = [
     "Testing bot TI",
     "Komunitas laptop bajakan",
     "Komunitas Jual Beli Laptop/PC Ponorogo",
+    "HECKER PRO PO",
 ];
 
 const menuText = `
