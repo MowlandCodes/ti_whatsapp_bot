@@ -15,6 +15,7 @@ const badWordsId = [
     "ajg",
     "anjing",
     "anjir",
+    "anying",
     "antek",
     "asing",
     "ateis",
@@ -161,7 +162,6 @@ const badWordsId = [
     "cerewet",
     "jancok",
     "bgsd",
-    "xhamster.com",
     "kimax",
     "pelacur",
     "germo",
@@ -188,6 +188,13 @@ const badWordsId = [
     "toket",
     "cacat",
     "tepos",
+    "goblog",
+    "telaso",
+    "jomok",
+    "k0nt0l",
+    "ngocok",
+    "ewe",
+    "ngenskuy",
 ];
 
 const menuText = `🎓 *Selamat datang di  _Prodi Teknik Informatika Semester 3_* 🎓
