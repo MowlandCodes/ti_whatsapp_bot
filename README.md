@@ -96,7 +96,6 @@ Contributions are welcome! If you have suggestions for improvements or find bugs
 ## 📜 License
 
 This project is licensed under the MIT License - see the `LICENSE` file for details.
-**(Note: You currently don't have a LICENSE file. It's highly recommended to add one. You can easily create one on GitHub by clicking "Add file" -> "Create new file" and typing `LICENSE` as the filename. GitHub will offer templates, the MIT license is a common and permissive choice).**
 
 ## 📧 Contact
 
