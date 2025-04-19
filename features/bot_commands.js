@@ -142,7 +142,7 @@ ${currentTugasA1}
 *List Tugas A2:*
 ${currentTugasA2}
 
-> _*Jadwal dapat berubah sewaktu-waktu*_, tergantung dengan kondisi kelas.`,
+> _*Kerjakan tugas tepat waktu*_ kalo mau tepat waktu tod.`,
                             });
                         } else {
                             // Avoid replying to own messages if logic gets complex
