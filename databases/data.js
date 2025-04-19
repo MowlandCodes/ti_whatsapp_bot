@@ -204,8 +204,8 @@ Berikut adalah beberapa menu yang saya sediakan untuk kalian berdasarkan kategor
 *PERKULIAHAN* :
 * \`/help\` : Untuk melihat menu 📜
 * \`/info_kuliah\` : Menampilkan jadwal dan info kuliah terdekat 📋
-* \`/list_matakuliah\` *_not available_* :Menampilkan daftar matakuliah dan dosen yang mengampu 📑
-* \`/list_tugas\` *_not available_* : List tugas yang diberikan oleh dosen 📚
+* \`/list_matakuliah\` :Menampilkan daftar matakuliah dan dosen yang mengampu 📑
+* \`/list_tugas\` : List tugas yang diberikan oleh dosen 📚
 
 *LAINNYA*:
 * \`/server\` : Menampilkan informasi tentang server 📊
@@ -243,7 +243,9 @@ const serverMon = (serverStats) => {
 `;
 };
 
-const listMataKuliah = `1. Aljabar Linear (Triana Harmini, M.Pd.)
+const listMataKuliah = `📑 *List Mata Kuliah TI Semester 3* 📑
+
+1. Aljabar Linear (Triana Harmini, M.Pd.)
 2. Desain Antar Muka (Rizfi Syarif, M.Kom.)
 3. English for Academic Purpose (Taufiqurrahman, S.Pd., M.T., PCQI.)
 4. Bahasa Arab Li Aghrad Khassah (Umma Fatayati, S.Pd.I., M.Pd.)
