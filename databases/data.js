@@ -13,6 +13,7 @@ const badWordsId = [
     "ajg",
     "anjing",
     "anjir",
+    "anjay",
     "anying",
     "autis",
     "ayam kampus",
@@ -177,6 +178,9 @@ const badWordsId = [
     "ngenskuy",
     "8==D",
     "8=D",
+    "kintil",
+    "k.o.n.t.o.l",
+    "ngwntod",
 ];
 
 const menuText = `🎓 *Selamat datang di  _Prodi Teknik Informatika Semester 3_* 🎓
