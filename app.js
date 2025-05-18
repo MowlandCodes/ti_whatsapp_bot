@@ -4,9 +4,7 @@ const {
     useMultiFileAuthState,
     makeCacheableSignalKeyStore,
     Browsers,
-    makeInMemoryStore,
     fetchLatestBaileysVersion,
-    jidNormalizedUser,
 } = require("baileys");
 const {
     question,
@@ -24,12 +22,6 @@ const { NodeCache } = require("@cacheable/node-cache");
 const { Boom } = require("@hapi/boom");
 const { validGroups } = require("./databases/data");
 
-const store = makeInMemoryStore({
-    logger: pino({ level: "silent" }).child({
-        level: "silent",
-        stream: "store",
-    }),
-});
 const msgRetryCounterCache = new NodeCache({
     stdTTL: 5 * 60,
     useClones: false,
@@ -55,16 +47,14 @@ const connectToWhatsapp = async () => {
         markOnlineOnConnect: false,
         browser: Browsers.ubuntu("Firefox"),
         cachedGroupMetadata: async (jid) => groupCache.get(jid),
-        getMessage: async (key) => {
-            let jid = jidNormalizedUser(key.remoteJid);
-            let msg = await store.loadMessage(jid, key.jid);
-
-            return msg?.message || "";
-        },
+        // getMessage: async (key) => {
+        //     let jid = jidNormalizedUser(key.remoteJid);
+        //     let msg = await store.loadMessage(jid, key.jid);
+        //
+        //     return msg?.message || "";
+        // },
         defaultQueryTimeoutMs: undefined,
     });
-
-    store.bind(bot.ev);
 
     if (!bot.authState.creds.registered) {
         const phoneNumber = await question(
